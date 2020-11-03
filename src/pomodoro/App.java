@@ -10,23 +10,49 @@ import java.awt.event.ActionListener;
 public class App {
 
     private final JFrame frame;
+    private Timer timer;
+    private final int delay = 1000; //Milliseconds -> 1000ms = 1s
+    private final int fixedMinutes = 40;
+    private int timerMinute = 40;
+    private int timerSeconds = 0;
 
     public App (){
-        this.frame = new JFrame("Pomodoro App");
+        this.frame = new JFrame("Pomodoro App"); 
         this.frame.setBounds(new Rectangle(600 , 400));
         this.frame.setVisible(true);
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void initGui(){
-        JButton startBtn = new JButton("Start");
+    public void initApp(){
+        JLabel timerArea = new JLabel("Timer:", SwingConstants.CENTER);
+        timer = new Timer(delay, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(timerMinute == 0) {
+                    timer.stop();
+                }
+                if(timerSeconds == 0) {
+                    timerSeconds = 59;
+                    --timerMinute;
+                }
+                else
+                    --timerSeconds;
+                timerArea.setText(timerMinute + " : " + timerSeconds);
+            }
+        });
+        timer.setRepeats(true);
+
+        JButton startBtn = new JButton("Start/Pause");
         startBtn.setBackground(new Color(42,222,114));
         startBtn.setPreferredSize(new Dimension(100,60));
         startBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: To start the timer
+                if(timer.isRunning())
+                    timer.stop();
+                else
+                    timer.start();
             }
         });
 
@@ -36,17 +62,10 @@ public class App {
         endBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: To end and reset the timer
-            }
-        });
-
-        JButton pauseBtn = new JButton("Pause");
-        pauseBtn.setBackground(new Color(255,255,255));
-        pauseBtn.setPreferredSize(new Dimension(100,60));
-        pauseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: To pause the timer
+                timer.stop();
+                timerMinute = fixedMinutes;
+                timerSeconds = 0;
+                timerArea.setText(timerMinute + " : " + timerSeconds);
             }
         });
 
@@ -59,10 +78,10 @@ public class App {
                 //TODO: Setting Button to adjust the time of timer, pauses and longer pauses
             }
         });
-        initGridLayout(startBtn, endBtn, pauseBtn, settingBtn);
+        initGridLayout(timerArea ,startBtn, endBtn, settingBtn);
     }
 
-    public void initGridLayout(JButton startBtn, JButton endBtn,JButton pauseBtn, JButton settingBtn){
+    public void initGridLayout(JLabel timerArea, JButton startBtn, JButton endBtn, JButton settingBtn){
         this.frame.getContentPane().setBackground(new Color(46,46,46));
 
         //Initializing our layout for out JFrame
@@ -71,7 +90,6 @@ public class App {
         this.frame.setLayout(gridLayout);
 
         //Setting JLabel to represent our timer
-        JLabel timerArea = new JLabel("Timer:", SwingConstants.CENTER);
         timerArea.setFont(new Font("Serif", Font.BOLD, 48));
         timerArea.setForeground(Color.WHITE);
         timerArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
@@ -81,7 +99,7 @@ public class App {
         gridConstraints.insets = new Insets(50,50,20,50);
 
         //Local parameters
-        gridConstraints.gridx = 1;
+        gridConstraints.gridx = 0;
         gridConstraints.gridy = 0;
         gridConstraints.weightx = 1;
         gridConstraints.weighty = 1;
@@ -97,21 +115,17 @@ public class App {
 
         gridConstraints.gridx = 1;
         gridConstraints.gridy = 5;
-        this.frame.add(pauseBtn, gridConstraints);
-
-        gridConstraints.gridx = 2;
-        gridConstraints.gridy = 5;
         this.frame.add(endBtn, gridConstraints);
 
-        gridConstraints.gridx = 1;
+        gridConstraints.gridx = 0;
         gridConstraints.gridy = 6;
         this.frame.add(settingBtn, gridConstraints);
     }
 
     //To Run our application
     public static void main(String[] args) {
-        App pomdoroApp = new App();
-        pomdoroApp.initGui();
+        App pomodoroApp = new App();
+        pomodoroApp.initApp();
     }
 
 }
