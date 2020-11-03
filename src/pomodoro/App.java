@@ -11,10 +11,13 @@ public class App {
 
     private final JFrame frame;
     private Timer timer;
-    private final int delay = 1000; //Milliseconds -> 1000ms = 1s
     private final int fixedMinutes = 40;
-    private int timerMinute = 40;
+    private int timerMinute = fixedMinutes;
     private int timerSeconds = 0;
+    private int breakMinutes = 5;
+    private int longBreak = 15;
+    private int pauseCounter = 0;
+    private boolean pause = false;
 
     public App (){
         this.frame = new JFrame("Pomodoro App"); 
@@ -25,14 +28,36 @@ public class App {
     }
 
     public void initApp(){
-        JLabel timerArea = new JLabel("Timer:", SwingConstants.CENTER);
+        JLabel timerArea = new JLabel(timerMinute + " : " + timerSeconds, SwingConstants.CENTER);
+        JLabel breakArea = new JLabel("", SwingConstants.CENTER);
+        int delay = 1000; //Milliseconds -> 1000ms = 1s
+
+        //PomodoroTimer's main function using javax.swing.Timer
         timer = new Timer(delay, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(timerMinute == 0) {
+                //Checking if our timer has ran out and stopping the process
+                if(timerMinute == 0 && timerSeconds == 0) {
                     timer.stop();
+                    //Switching pause flag everytime the timer reaches 0
+                    pause = !pause;
+                    //If we have done more than 2 breaks then the program will start a long break session
+                    if(pauseCounter == 2){
+                        timerMinute = longBreak;
+                        breakArea.setText("LONG BREAK!");
+                        pauseCounter = 0;
+                    }else if(pause) { //if we haven't reach 2 breaks yet, the timer automatically starts a normal break session
+                        timerMinute = breakMinutes;
+                        ++pauseCounter;
+                        breakArea.setText("BREAK!");
+                    }
+                    else { //if we have finished our break, then the timer will restart with the default minutes specified by fixedMinutes
+                        timerMinute = fixedMinutes;
+                        breakArea.setText("");
+                    }
+                    timer.start();
                 }
-                if(timerSeconds == 0) {
+                if(timerSeconds == 0) { //Classic timer algorithm
                     timerSeconds = 59;
                     --timerMinute;
                 }
@@ -78,10 +103,10 @@ public class App {
                 //TODO: Setting Button to adjust the time of timer, pauses and longer pauses
             }
         });
-        initGridLayout(timerArea ,startBtn, endBtn, settingBtn);
+        initGridLayout(timerArea, breakArea, startBtn, endBtn, settingBtn);
     }
 
-    public void initGridLayout(JLabel timerArea, JButton startBtn, JButton endBtn, JButton settingBtn){
+    public void initGridLayout(JLabel timerArea, JLabel breakArea, JButton startBtn, JButton endBtn, JButton settingBtn){
         this.frame.getContentPane().setBackground(new Color(46,46,46));
 
         //Initializing our layout for out JFrame
@@ -94,6 +119,11 @@ public class App {
         timerArea.setForeground(Color.WHITE);
         timerArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
+        breakArea.setFont(new Font("Serif", Font.BOLD, 48));
+        breakArea.setForeground(Color.WHITE);
+        breakArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+
         //Global GridBagConstraints parameters
         gridConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridConstraints.insets = new Insets(50,50,20,50);
@@ -105,6 +135,10 @@ public class App {
         gridConstraints.weighty = 1;
         gridConstraints.anchor = GridBagConstraints.NORTH;
         this.frame.add(timerArea, gridConstraints);
+
+        gridConstraints.gridx = 1;
+        gridConstraints.gridy = 0;
+        this.frame.add(breakArea, gridConstraints);
 
         //Changing global Insets
         gridConstraints.insets = new Insets(0,5,10,5);
