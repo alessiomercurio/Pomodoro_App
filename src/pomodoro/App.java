@@ -23,7 +23,6 @@ public class App {
     public App (){
         this.frame = new JFrame("Pomodoro App"); 
         this.frame.setBounds(new Rectangle(600 , 400));
-        this.frame.setVisible(true);
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.frame.setIconImage(icon.getImage());
@@ -112,12 +111,12 @@ public class App {
     }
 
     public void initGridLayout(JLabel timerArea, JLabel breakArea, JButton startBtn, JButton endBtn, JButton settingBtn){
-        this.frame.getContentPane().setBackground(new Color(46,46,46));
+        frame.getContentPane().setBackground(new Color(46,46,46));
 
         //Initializing our layout for out JFrame
         GridBagLayout gridLayout = new GridBagLayout();
         GridBagConstraints gridConstraints = new GridBagConstraints();
-        this.frame.setLayout(gridLayout);
+        frame.setLayout(gridLayout);
 
         //Setting JLabel to represent our timer
         timerArea.setFont(new Font("Monospaced", Font.BOLD, 48));
@@ -139,26 +138,28 @@ public class App {
         gridConstraints.weightx = 1;
         gridConstraints.weighty = 1;
         gridConstraints.anchor = GridBagConstraints.NORTH;
-        this.frame.add(timerArea, gridConstraints);
+        frame.add(timerArea, gridConstraints);
 
         gridConstraints.gridx = 1;
         gridConstraints.gridy = 0;
-        this.frame.add(breakArea, gridConstraints);
+        frame.add(breakArea, gridConstraints);
 
         //Changing global Insets
         gridConstraints.insets = new Insets(0,5,10,5);
 
         gridConstraints.gridx = 0;
         gridConstraints.gridy = 5;
-        this.frame.add(startBtn, gridConstraints);
+        frame.add(startBtn, gridConstraints);
 
         gridConstraints.gridx = 1;
         gridConstraints.gridy = 5;
-        this.frame.add(endBtn, gridConstraints);
+        frame.add(endBtn, gridConstraints);
 
         gridConstraints.gridx = 0;
         gridConstraints.gridy = 6;
-        this.frame.add(settingBtn, gridConstraints);
+        frame.add(settingBtn, gridConstraints);
+
+        frame.setVisible(true);
     }
 
     //To Run our application
