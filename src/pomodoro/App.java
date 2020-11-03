@@ -18,6 +18,7 @@ public class App {
     private int longBreak = 15;
     private int pauseCounter = 0;
     private boolean pause = false;
+    private final ImageIcon icon = new ImageIcon("resources/pomodoro.png");
 
     public App (){
         this.frame = new JFrame("Pomodoro App"); 
@@ -46,14 +47,17 @@ public class App {
                         timerMinute = longBreak;
                         breakArea.setText("LONG BREAK!");
                         pauseCounter = 0;
+                        java.awt.Toolkit.getDefaultToolkit().beep();
                     }else if(pause) { //if we haven't reach 2 breaks yet, the timer automatically starts a normal break session
                         timerMinute = breakMinutes;
                         ++pauseCounter;
                         breakArea.setText("BREAK!");
+                        java.awt.Toolkit.getDefaultToolkit().beep();
                     }
                     else { //if we have finished our break, then the timer will restart with the default minutes specified by fixedMinutes
                         timerMinute = fixedMinutes;
                         breakArea.setText("");
+                        java.awt.Toolkit.getDefaultToolkit().beep();
                     }
                     timer.start();
                 }
@@ -68,7 +72,7 @@ public class App {
         });
         timer.setRepeats(true);
 
-        JButton startBtn = new JButton("Start/Pause");
+        JButton startBtn = new JButton("Start / Pause");
         startBtn.setBackground(new Color(42,222,114));
         startBtn.setPreferredSize(new Dimension(100,60));
         startBtn.addActionListener(new ActionListener() {
@@ -81,7 +85,7 @@ public class App {
             }
         });
 
-        JButton endBtn = new JButton("End");
+        JButton endBtn = new JButton("Stop");
         endBtn.setBackground(new Color(222,42,42));
         endBtn.setPreferredSize(new Dimension(100,60));
         endBtn.addActionListener(new ActionListener() {
@@ -94,7 +98,7 @@ public class App {
             }
         });
 
-        JButton settingBtn = new JButton("Option");
+        JButton settingBtn = new JButton("Settings");
         settingBtn.setBackground(new Color(255,255,255));
         settingBtn.setPreferredSize(new Dimension(100,60));
         settingBtn.addActionListener(new ActionListener() {
@@ -115,11 +119,11 @@ public class App {
         this.frame.setLayout(gridLayout);
 
         //Setting JLabel to represent our timer
-        timerArea.setFont(new Font("Serif", Font.BOLD, 48));
+        timerArea.setFont(new Font("Monospaced", Font.BOLD, 48));
         timerArea.setForeground(Color.WHITE);
         timerArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        breakArea.setFont(new Font("Serif", Font.BOLD, 48));
+        breakArea.setFont(new Font("Monospaced", Font.BOLD, 48));
         breakArea.setForeground(Color.WHITE);
         breakArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -154,6 +158,8 @@ public class App {
         gridConstraints.gridx = 0;
         gridConstraints.gridy = 6;
         this.frame.add(settingBtn, gridConstraints);
+        //Setting Icon
+        this.frame.setIconImage(icon.getImage());
     }
 
     //To Run our application
