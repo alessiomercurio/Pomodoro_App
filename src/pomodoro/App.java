@@ -18,7 +18,7 @@ public class App {
     private int longBreak = 15;
     private int pauseCounter = 0;
     private boolean pause = false;
-    private final ImageIcon icon = new ImageIcon("resources/pomodoro.png");
+    //private final ImageIcon icon = new ImageIcon("/pomodoro.png");
 
     public App (){
         this.frame = new JFrame("Pomodoro App"); 
@@ -26,6 +26,7 @@ public class App {
         this.frame.setVisible(true);
         this.frame.setResizable(false);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.frame.setIconImage(icon.getImage());
     }
 
     public void initApp(){
@@ -158,8 +159,6 @@ public class App {
         gridConstraints.gridx = 0;
         gridConstraints.gridy = 6;
         this.frame.add(settingBtn, gridConstraints);
-        //Setting Icon
-        this.frame.setIconImage(icon.getImage());
     }
 
     //To Run our application
