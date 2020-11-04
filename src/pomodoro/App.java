@@ -11,10 +11,10 @@ public class App {
 
     private final JFrame frame;
     private Timer timer;
-    private final int fixedMinutes = 40;
+    private final int fixedMinutes = 1;
     private int timerMinute = fixedMinutes;
     private int timerSeconds = 0;
-    private int breakMinutes = 5;
+    private int breakMinutes = 1;
     private int longBreak = 15;
     private int pauseCounter = 0;
     private boolean pause = false;
@@ -43,7 +43,7 @@ public class App {
                     //Switching pause flag everytime the timer reaches 0
                     pause = !pause;
                     //If we have done more than 2 breaks then the program will start a long break session
-                    if(pauseCounter == 2){
+                    if(pause && pauseCounter == 2){
                         timerMinute = longBreak;
                         breakArea.setText("LONG BREAK!");
                         pauseCounter = 0;
@@ -95,6 +95,7 @@ public class App {
                 timerMinute = fixedMinutes;
                 timerSeconds = 0;
                 timerArea.setText(timerMinute + " : " + timerSeconds);
+                breakArea.setText("");
             }
         });
 
@@ -119,11 +120,11 @@ public class App {
         frame.setLayout(gridLayout);
 
         //Setting JLabel to represent our timer
-        timerArea.setFont(new Font("Monospaced", Font.BOLD, 48));
+        timerArea.setFont(new Font("Monospaced", Font.BOLD, 30));
         timerArea.setForeground(Color.WHITE);
         timerArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        breakArea.setFont(new Font("Monospaced", Font.BOLD, 48));
+        breakArea.setFont(new Font("Monospaced", Font.BOLD, 30));
         breakArea.setForeground(Color.WHITE);
         breakArea.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
