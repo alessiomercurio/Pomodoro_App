@@ -11,10 +11,10 @@ public class App {
 
     private final JFrame frame;
     private Timer timer;
-    private final int fixedMinutes = 1;
+    private final int fixedMinutes = 40;
     private int timerMinute = fixedMinutes;
     private int timerSeconds = 0;
-    private int breakMinutes = 1;
+    private int breakMinutes = 5;
     private int longBreak = 15;
     private int pauseCounter = 0;
     private boolean pause = false;
