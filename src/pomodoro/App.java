@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class App {
 
-    private final JFrame frame;
+    private static JFrame frame;
     private Timer timer;
     private final int fixedMinutes = 40;
     private int timerMinute = fixedMinutes;
@@ -160,13 +160,13 @@ public class App {
         gridConstraints.gridy = 6;
         frame.add(settingBtn, gridConstraints);
 
-        frame.setVisible(true);
     }
 
     //To Run our application
     public static void main(String[] args) {
         App pomodoroApp = new App();
         pomodoroApp.initApp();
+        App.frame.setVisible(true);
     }
 
 }
